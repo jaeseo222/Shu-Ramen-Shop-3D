@@ -5,60 +5,59 @@ using UnityEngine;
 public class WaterPot : MonoBehaviour
 {
     Ray ray;
+    private RigidbodyConstraints rigidCon;
     private RaycastHit hit;
-    private Vector3 originPos, pos;//주전자 원래 위치, 고정시키려는 위치
-    public GameObject potImg;//주전자 위 흰색 캔버스
+    private Vector3 originPos;//주전자 원래 위치
+    public bool isPot;
+    private float distance;
 
     private void Start()
     {
+        rigidCon = GetComponent<Rigidbody>().constraints;
         originPos = GetComponent<Rigidbody>().position;//주전자 원래위치 저장해놓기
-        potImg = GameObject.Find("Canvas/waterpot");
+        isPot = false;
+        distance = 14f;
     }
-    private void Update()
-    {
-        //주전자 따라다닐 흰색 캔버스
-        potImg.transform.position=Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 0, 0));
-    }
+
+    //주전자 들기
     private void OnMouseDrag()
     {
-        //주전자 들기
-        float distance = 10;
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        if (transform.position.y < -2.7f) objPosition.y = -2.7f;//바닥으로 안 꺼지게 제어
         transform.position = objPosition;
+
+        //주전자 위치 앞뒤로 조정
+        float wheelInput = Input.GetAxis("Mouse ScrollWheel");
+        if (wheelInput > 0 && transform.position.z < -0.2f)// 휠을 밀어 돌렸을 때의 처리 ↑
+            distance += 0.8f;
+        else if (wheelInput < 0 && transform.position.z > -5.0f)// 휠을 당겨 올렸을 때의 처리 ↓
+            distance -= 0.8f;
     }
+
+    //주전자 내려놓기
     private void OnMouseUp()
     {
-        //주전자 내려놓기
+        //냄비 있는 곳에서 마우스 떼면(냄비 트리거 pot.cs 작동)
+        //공중에서 1초동안 물 따르고 제자리로
+        if (isPot)
+            StartCoroutine(PotWaterFill());
+        
+        //냄비 없는 곳에서 떼면 바로 제자리로
+        else
+            transform.position = originPos;
 
-        //내려놓은 마지막 위치
-        pos = transform.position;
-        //냄비있는 곳에서 마우스 떼면(냄비이미지&&주전자이미지 겹칠 때)
-        //1초동안 물 따르고 제자리로
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-        {
-            //1초 동안 물 따르기
-            StartCoroutine("TimeCo");
-            switch (hit.collider.gameObject.name)
-            {
-                //각 주전자에 따라
-                case "pot1":
-                    transform.Find("pot1").transform.Find("water").gameObject.SetActive(true);
-                    //처리 내용
-
-                    break;
-
-            }
-        }
-        //없는 곳에서 떼면, 바로 제자리로
-        transform.position = originPos;
+        distance = 14f;
     }
 
-    private IEnumerator TimeCo()
+    private IEnumerator PotWaterFill()
     {
-        //물따르는 애니메이션 추가
-
-        yield return new WaitForSeconds(0.1f);
-        transform.position = pos;
+        //애니메이션 추가
+        transform.position = new Vector3(transform.position.x, -1.53f, transform.position.z);
+        rigidCon = RigidbodyConstraints.FreezePositionX;
+        rigidCon = RigidbodyConstraints.FreezePositionY;
+        rigidCon = RigidbodyConstraints.FreezePositionZ;
+        yield return new WaitForSeconds(1.0f);
+        transform.position = originPos;
     }
 }
