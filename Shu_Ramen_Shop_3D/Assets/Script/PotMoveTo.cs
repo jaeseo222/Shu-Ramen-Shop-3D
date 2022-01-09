@@ -4,87 +4,55 @@ using UnityEngine;
 
 public class PotMoveTo : MonoBehaviour
 {
-    private RigidbodyConstraints rigidCon;
+    private Transform ingredient;
     private Vector3 originPos;//원래 위치
     private bool isComp;
-    MoveTo moveTo;
 
     private void Start()
     {
-        rigidCon = GetComponent<Rigidbody>().constraints;
+        ingredient = transform;
         originPos = GetComponent<Rigidbody>().position;//원래위치 저장해놓기
         isComp = false;
-    }
-    private void Update()
-    {
-        moveTo = GameObject.Find("waterPot").GetComponent<MoveTo>();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        //콜라이더 범위 내에서만 작동
-        if (Inclusion(transform.GetComponent<Collider>().bounds, other.bounds) && Input.GetMouseButtonUp(0))
-        {
-            if (other.tag == "ingredient")
-            {
-                moveTo.isPot = true;
-                switch (other.gameObject.name)
+        if (Input.GetMouseButtonUp(0))
+            if (Inclusion(other.bounds, transform.GetComponent<Collider>().bounds))
+                if (other.gameObject.name == "comp")
                 {
-                    case "waterPot"://물 -> 타이머 시작
-                        transform.Find("water").gameObject.SetActive(true);
-                        break;
-                    case "soup"://스프
-                        transform.Find("souped").gameObject.SetActive(true);
-                        break;
-                    case "leek"://파
-                        transform.Find("choppedLeek").gameObject.SetActive(true);
-                        break;
-                    case "egg"://계란
-                        transform.Find("egged").gameObject.SetActive(true);
-                        break;
-                    case "ramen"://면
-                        transform.Find("ramened").gameObject.SetActive(true);
-                        break;
+                    isComp = true;
+                    MoveToComp();
+                    Invoke("MoveOriginPos", 1.0f);
+                    Invoke("formatPot", 1.0f);
                 }
-                //스프 + 물
-                if (transform.Find("water").gameObject.activeSelf && transform.Find("souped").gameObject.activeSelf)
-                {
-                    transform.Find("water").gameObject.SetActive(false);
-                    transform.Find("souped").gameObject.SetActive(false);
-                    transform.Find("soupedWater").gameObject.SetActive(true);
-                }
-            }
-            if (other.gameObject.name == "comp")
-            {
-                isComp = true;
-                StartCoroutine(MoveToComp());
-            }
-        }
     }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "ingredient")
-            moveTo.isPot = false;
-    }
+
     private void OnMouseUp()
     {
         if (!isComp)
-            transform.position = originPos;
+            MoveOriginPos();
     }
-
-    private IEnumerator MoveToComp()
+    private void MoveToComp()
     {
         transform.position = new Vector3(9.56f, -2.97f, -1.26f);
-        rigidCon = RigidbodyConstraints.FreezePositionX;
-        rigidCon = RigidbodyConstraints.FreezePositionY;
-        rigidCon = RigidbodyConstraints.FreezePositionZ;
-
         //판정
 
         //애니메이션 추가
-
-        yield return new WaitForSeconds(1.0f);
+    }
+    private void MoveOriginPos()
+    {
         transform.position = originPos;
+        isComp = false;
+    }
+
+    private void formatPot() {
+        ingredient.Find("water").gameObject.SetActive(false);
+        ingredient.Find("soupedWater").gameObject.SetActive(false);
+        ingredient.Find("souped").gameObject.SetActive(false);
+        ingredient.Find("ramened").gameObject.SetActive(false);
+        ingredient.Find("choppedLeek").gameObject.SetActive(false);
+        ingredient.Find("egged").gameObject.SetActive(false);
     }
 
     Vector3[] positions = new Vector3[6];
