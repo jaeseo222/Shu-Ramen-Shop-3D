@@ -40,6 +40,7 @@ public class PotMoveTo : MonoBehaviour
 
         //애니메이션 추가
     }
+
     private void MoveOriginPos()
     {
         transform.position = originPos;
