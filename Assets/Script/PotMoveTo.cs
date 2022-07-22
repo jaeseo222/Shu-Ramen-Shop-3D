@@ -8,6 +8,27 @@ public class PotMoveTo : MonoBehaviour
     private Vector3 originPos;//원래 위치
     private bool isComp;
 
+    private bool isStatic = true; // 냄비가 붙어 있는지 여부
+
+    public float time = 0f; // 시간 (물 넢은 후부터 카운트)
+    public bool isStart = false; // 물 채워진 걸로 시작 여부
+    public bool eggAfterFive = false; // 물 끓고 계란 넣었는지 여부
+    public bool leekAfterFive = false; // 물 끓고 파 넣었는지 여부
+
+    private int money = 0; // 라면 1개에 번 돈
+    private string customerTalking = ""; // 손님 말
+
+    // 손님 말 종류
+    private const string FAIL = "지금 장난해?";
+    private const string EMPTY_RAW = "먼가가 허전하고 안 익었짜나!";
+    private const string SALTY_EMPTY = "켁, 넘 짜! 그리고 먼가 허전해!";
+    private const string SIMPLE = "라면이 너무 심플한거 아니야~?";
+    private const string RAW = "안 익었짜나!";
+    private const string NO_SOUL_EMPTY = "정성도 없고 먼가 허전하군...";
+    private const string SALTY = "켁, 넘 짜!";
+    private const string NO_SOUL = "맛에 정성이 없어!";
+    private const string VERY_NICE = "아주 좋아~";
+
     private void Start()
     {
         ingredient = transform;
@@ -33,18 +54,155 @@ public class PotMoveTo : MonoBehaviour
         if (!isComp)
             MoveOriginPos();
     }
+
+    private void OnMouseDown()
+    {
+        // 마우스 드래그 시작되므로 false로 변경
+        isStatic = false;
+    }
+
+    private void Update()
+    {
+        // 물 채워졌고, 냄비가 붙어있다면 시간 세기
+        if (isStart && isStatic)
+        {
+            if (time == 0f)
+            {
+                Debug.Log("초 세기 시작");
+            }
+            time += Time.deltaTime;
+        }    
+    }
+
     private void MoveToComp()
     {
         transform.position = new Vector3(9.56f, -2.97f, -1.26f);
-        //판정
+
+        // 판정
+        money = getMoney(time, eggAfterFive, leekAfterFive);
+
+        // 판정 결과 출력
+        Debug.Log("번 돈: " + money + ", 멘트: " + customerTalking);
+
+        // 시간 및 판정 변수 초기화
+        time = 0f;
+        isStart = false;
+        eggAfterFive = false;
+        leekAfterFive = false;
 
         //애니메이션 추가
+    }
+
+    private string mergeCustomerTalking(string ment, int money)
+    {
+        return ment + " " + money.ToString() + "원 주지~";
+    }
+
+    private int getMoney(float endTime, bool eggAfterFive, bool leekAfterFive)
+    {
+        // 냄비에 재료 담긴 여부 파악
+        bool isSoupedWater = ingredient.Find("soupedWater").gameObject.activeSelf;
+        bool isRamened = ingredient.Find("ramened").gameObject.activeSelf;
+        bool isChoppedLeek = ingredient.Find("choppedLeek").gameObject.activeSelf;
+        bool isEgged = ingredient.Find("egged").gameObject.activeSelf;
+
+        Debug.Log("끝난 시간: " + endTime + ", 담긴 재료 정보: " + isSoupedWater+isRamened+isChoppedLeek+isEgged);
+
+        int money = 0;
+        if (!isSoupedWater || !isRamened || endTime > 10f)
+        {
+            customerTalking = FAIL;
+        }
+        else if(isEgged && isChoppedLeek && endTime > 8f)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(SALTY, money);
+        }
+        else if(isEgged && isChoppedLeek && endTime > 5f && eggAfterFive && leekAfterFive)
+        {
+            money = 1000;
+            customerTalking = VERY_NICE + " " + money.ToString() + "원 이야!";
+        }
+        else if(isEgged && isChoppedLeek && endTime > 5f && (eggAfterFive || leekAfterFive))
+        {
+            money = 800;
+            customerTalking = mergeCustomerTalking(NO_SOUL, money);
+        }
+        else if(isEgged && isChoppedLeek && endTime > 5f)
+        {
+            money = 600;
+            customerTalking = mergeCustomerTalking(NO_SOUL, money);
+        }
+        else if(isEgged && isChoppedLeek)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(RAW, money);
+        }
+        else if(isEgged && endTime > 8f)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(SALTY, money);
+        }
+        else if(isEgged && endTime > 5f && eggAfterFive)
+        {
+            money = 600;
+            customerTalking = mergeCustomerTalking(SIMPLE, money);
+        }
+        else if (isEgged && endTime > 5f)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(NO_SOUL_EMPTY, money);
+        }
+        else if (isEgged)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(RAW, money);
+        }
+        else if (isChoppedLeek && endTime > 8f)
+        {
+            money = 300;
+            customerTalking = mergeCustomerTalking(SALTY_EMPTY, money);
+        }
+        else if (isChoppedLeek && endTime > 5f && leekAfterFive)
+        {
+            money = 600;
+            customerTalking = mergeCustomerTalking(SIMPLE, money);
+        }
+        else if (isChoppedLeek && endTime > 5f)
+        {
+            money = 500;
+            customerTalking = mergeCustomerTalking(NO_SOUL_EMPTY, money);
+        }
+        else if (isChoppedLeek)
+        {
+            money = 300;
+            customerTalking = mergeCustomerTalking(EMPTY_RAW, money);
+        }
+        else if (endTime > 8f)
+        {
+            money = 300;
+            customerTalking = mergeCustomerTalking(SALTY_EMPTY, money);
+        }
+        else if(endTime > 5f)
+        {
+            money = 400;
+            customerTalking = mergeCustomerTalking(SIMPLE, money);
+        }
+        else
+        {
+            money = 300;
+            customerTalking = mergeCustomerTalking(EMPTY_RAW, money);
+        }
+        return money;
     }
 
     private void MoveOriginPos()
     {
         transform.position = originPos;
         isComp = false;
+
+        // 원점으로 돌아오면서 냄비가 가만히 있으므로 true로 변경
+        isStatic = true; 
     }
 
     private void formatPot() {
