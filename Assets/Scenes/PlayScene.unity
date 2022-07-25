@@ -2309,6 +2309,7 @@ GameObject:
   - component: {fileID: 1075895701}
   - component: {fileID: 1075895700}
   - component: {fileID: 1075895702}
+  - component: {fileID: 1075895703}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2454,6 +2455,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   totalMoneyObj: {fileID: 97724071}
+--- !u!114 &1075895703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075895698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f267c6297919be478282b4ddc03f212, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraPotObj: {fileID: 1341955702}
 --- !u!1 &1125090178
 GameObject:
   m_ObjectHideFlags: 0

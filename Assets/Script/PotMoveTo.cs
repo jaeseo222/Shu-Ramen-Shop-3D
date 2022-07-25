@@ -87,7 +87,27 @@ public class PotMoveTo : MonoBehaviour
 
     private void MoveToComp()
     {
-        transform.position = new Vector3(9.56f, -2.97f, -1.26f);
+        ExtraPot extraPotScript = GameObject.Find("GameManager").GetComponent<ExtraPot>();
+        int child = extraPotScript.extraPotIndex;
+
+        // 냄비가 탔다면 -> 남은 냄비 깎기
+        if (time > 10f && child >= 0)
+        {
+            extraPotScript.extraPotObj.transform.GetChild(child).gameObject.SetActive(false);
+            extraPotScript.extraPotIndex--;
+
+             //Debug.Log("남은 냄비 수: " + extraPotScript.extraPotIndex);
+        }
+
+        // 남은 냄비 있는 경우만 원상복구
+        if (child >= 0)
+        {
+            transform.position = new Vector3(9.56f, -2.97f, -1.26f);
+        }
+        else // 다 떨어졌다면 냄비 비활성화
+        {
+            this.gameObject.SetActive(false);
+        }
 
         // 판정
         money = getMoney(time, eggAfterFive, leekAfterFive);
