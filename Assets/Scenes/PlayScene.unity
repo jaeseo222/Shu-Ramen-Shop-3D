@@ -2308,6 +2308,7 @@ GameObject:
   - component: {fileID: 1075895699}
   - component: {fileID: 1075895701}
   - component: {fileID: 1075895700}
+  - component: {fileID: 1075895702}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2440,6 +2441,19 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   soundToggle: 1
   boilingWaterBgm: {fileID: 8300000, guid: fcff9184b81af0441ae7d706524ebc1e, type: 3}
+--- !u!114 &1075895702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1075895698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afb79f7d996f404aad9465f8ab807c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalMoneyObj: {fileID: 97724071}
 --- !u!1 &1125090178
 GameObject:
   m_ObjectHideFlags: 0

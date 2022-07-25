@@ -95,6 +95,9 @@ public class PotMoveTo : MonoBehaviour
         // 판정 결과 출력
         // Debug.Log("번 돈: " + money + ", 멘트: " + customerTalking);
 
+        // 전체 돈에 추가
+        TotalMoney.totalMoney += money;
+        
         // 판정 결과 말풍선에 띄우기
         customerChatObj.SetActive(true);
         customerObject.GetComponent<Text>().text = customerTalking;
