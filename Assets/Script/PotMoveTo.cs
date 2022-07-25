@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PotMoveTo : MonoBehaviour
 {
@@ -31,12 +32,19 @@ public class PotMoveTo : MonoBehaviour
 
     // 돈
     private readonly int [] MONEY = { 300, 400, 500, 600, 800, 1000 };
+
+    // 손님 말풍선
+    private GameObject customerObject; //텍스트
+    private GameObject customerChatObj; //배경 말풍선
     
     private void Start()
     {
         ingredient = transform;
         originPos = GetComponent<Rigidbody>().position;//원래위치 저장해놓기
         isComp = false;
+
+        customerChatObj = GameObject.Find("Canvas").transform.Find("CustomerChat").gameObject;
+        customerObject = customerChatObj.transform.Find("Text").gameObject;
     }
 
     private void OnTriggerStay(Collider other)
@@ -74,7 +82,7 @@ public class PotMoveTo : MonoBehaviour
                 Debug.Log("초 세기 시작");
             }
             time += Time.deltaTime;
-        }    
+        }
     }
 
     private void MoveToComp()
@@ -85,8 +93,17 @@ public class PotMoveTo : MonoBehaviour
         money = getMoney(time, eggAfterFive, leekAfterFive);
 
         // 판정 결과 출력
-        Debug.Log("번 돈: " + money + ", 멘트: " + customerTalking);
+        // Debug.Log("번 돈: " + money + ", 멘트: " + customerTalking);
 
+        // 전체 돈에 추가
+        TotalMoney.totalMoney += money;
+        
+        // 판정 결과 말풍선에 띄우기
+        customerChatObj.SetActive(true);
+        customerObject.GetComponent<Text>().text = customerTalking;
+
+        Invoke("deleteChat", 0.7f);
+            
         // 시간 및 판정 변수 초기화
         time = 0f;
         isStart = false;
@@ -94,6 +111,11 @@ public class PotMoveTo : MonoBehaviour
         leekAfterFive = false;
 
         //애니메이션 추가
+    }
+
+    private void deleteChat()
+    {
+        customerChatObj.SetActive(false);
     }
 
     private string mergeCustomerTalking(string ment, int money)
