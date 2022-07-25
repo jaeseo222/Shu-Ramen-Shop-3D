@@ -29,6 +29,9 @@ public class PotMoveTo : MonoBehaviour
     private const string NO_SOUL = "맛에 정성이 없어!";
     private const string VERY_NICE = "아주 좋아~";
 
+    // 돈
+    private readonly int [] MONEY = { 300, 400, 500, 600, 800, 1000 };
+    
     private void Start()
     {
         ingredient = transform;
@@ -115,82 +118,82 @@ public class PotMoveTo : MonoBehaviour
         }
         else if(isEgged && isChoppedLeek && endTime > 8f)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(SALTY, money);
         }
         else if(isEgged && isChoppedLeek && endTime > 5f && eggAfterFive && leekAfterFive)
         {
-            money = 1000;
+            money = MONEY[5];
             customerTalking = VERY_NICE + " " + money.ToString() + "원 이야!";
         }
         else if(isEgged && isChoppedLeek && endTime > 5f && (eggAfterFive || leekAfterFive))
         {
-            money = 800;
+            money = MONEY[4];
             customerTalking = mergeCustomerTalking(NO_SOUL, money);
         }
         else if(isEgged && isChoppedLeek && endTime > 5f)
         {
-            money = 600;
+            money = MONEY[3];
             customerTalking = mergeCustomerTalking(NO_SOUL, money);
         }
         else if(isEgged && isChoppedLeek)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(RAW, money);
         }
         else if(isEgged && endTime > 8f)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(SALTY, money);
         }
         else if(isEgged && endTime > 5f && eggAfterFive)
         {
-            money = 600;
+            money = MONEY[3];
             customerTalking = mergeCustomerTalking(SIMPLE, money);
         }
         else if (isEgged && endTime > 5f)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(NO_SOUL_EMPTY, money);
         }
         else if (isEgged)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(RAW, money);
         }
         else if (isChoppedLeek && endTime > 8f)
         {
-            money = 300;
+            money = MONEY[0];
             customerTalking = mergeCustomerTalking(SALTY_EMPTY, money);
         }
         else if (isChoppedLeek && endTime > 5f && leekAfterFive)
         {
-            money = 600;
+            money = MONEY[3];
             customerTalking = mergeCustomerTalking(SIMPLE, money);
         }
         else if (isChoppedLeek && endTime > 5f)
         {
-            money = 500;
+            money = MONEY[2];
             customerTalking = mergeCustomerTalking(NO_SOUL_EMPTY, money);
         }
         else if (isChoppedLeek)
         {
-            money = 300;
+            money = MONEY[0];
             customerTalking = mergeCustomerTalking(EMPTY_RAW, money);
         }
         else if (endTime > 8f)
         {
-            money = 300;
+            money = MONEY[0];
             customerTalking = mergeCustomerTalking(SALTY_EMPTY, money);
         }
         else if(endTime > 5f)
         {
-            money = 400;
+            money = MONEY[1];
             customerTalking = mergeCustomerTalking(SIMPLE, money);
         }
         else
         {
-            money = 300;
+            money = MONEY[0];
             customerTalking = mergeCustomerTalking(EMPTY_RAW, money);
         }
         return money;
