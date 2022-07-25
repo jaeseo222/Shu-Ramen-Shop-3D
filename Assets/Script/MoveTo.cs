@@ -7,13 +7,11 @@ public class MoveTo : MonoBehaviour
     private GameObject gameObj;
     private Vector3 originPos;//원래 위치
     public bool isPot;
-    string potName;
 
     private void Start()
     {
         originPos = this.gameObject.transform.position;//원래위치 저장해놓기
         isPot = false;
-        potName = null;
     }
 
     private void OnTriggerStay(Collider other)
@@ -22,32 +20,10 @@ public class MoveTo : MonoBehaviour
             if (Inclusion(other.bounds, transform.GetComponent<Collider>().bounds))
                 if (other.tag == "pot")
                 {
-                    potName = whatPot(other.gameObject.name);
                     isPot = true;
-                    PotFill(gameObj, potName);
+                    PotFill(gameObj, other.gameObject.name);
                     Invoke("MoveOriginPos", 1.0f);
                 }
-    }
-
-    private string whatPot(string name)
-    {
-        string str = null;
-        switch (name)
-        {
-            case "pot1":
-                str = "pot1";
-                break;
-            case "pot2":
-                str = "pot2";
-                break;
-            case "pot3":
-                str = "pot3";
-                break;
-            case "pot4":
-                str = "pot4";
-                break;
-        }
-        return str;
     }
 
     private void PotFill(GameObject gameObj, string name)
