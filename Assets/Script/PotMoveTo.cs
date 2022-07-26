@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,16 +48,26 @@ public class PotMoveTo : MonoBehaviour
     }
 
     private void OnTriggerStay(Collider other)
-    {
+    {    // other.bounds : 콜라이더의 중심 좌표와 콜라이더의 사이즈의 반
+         // other.center : 콜라이더의 중심 좌표
+         // other.extents : 콜라이더 사이즈의 반
+
+        // 마우스 뗐을 때
+        // 내가 드래그 하고 있는 오브젝트의 콜라이더의 센터가 충돌 오브젝트의 콜라이더 내에 있는지 체크
         if (Input.GetMouseButtonUp(0))
-            if (Inclusion(other.bounds, transform.GetComponent<Collider>().bounds))
-                if (other.gameObject.name == "comp")
-                {
-                    isComp = true;
-                    MoveToComp();
-                    Invoke("MoveOriginPos", 1.0f);
-                    Invoke("formatPot", 1.0f);
-                }
+        {
+            if (other.gameObject.name != "comp")
+            {
+                return;
+            }
+            if ((other.bounds.Contains(transform.GetComponent<Collider>().bounds.center)))
+            {
+                isComp = true;
+                MoveToComp();
+                Invoke("MoveOriginPos", 1.0f);
+                Invoke("formatPot", 1.0f);
+            }
+        }
     }
 
     private void OnMouseUp()
@@ -131,44 +141,44 @@ public class PotMoveTo : MonoBehaviour
         bool isChoppedLeek = ingredient.Find("choppedLeek").gameObject.activeSelf;
         bool isEgged = ingredient.Find("egged").gameObject.activeSelf;
 
-        Debug.Log("끝난 시간: " + endTime + ", 담긴 재료 정보: " + isSoupedWater+isRamened+isChoppedLeek+isEgged);
+        Debug.Log("끝난 시간: " + endTime + ", 담긴 재료 정보: " + isSoupedWater + isRamened + isChoppedLeek + isEgged);
 
         int money = 0;
         if (!isSoupedWater || !isRamened || endTime > 10f)
         {
             customerTalking = FAIL;
         }
-        else if(isEgged && isChoppedLeek && endTime > 8f)
+        else if (isEgged && isChoppedLeek && endTime > 8f)
         {
             money = MONEY[2];
             customerTalking = mergeCustomerTalking(SALTY, money);
         }
-        else if(isEgged && isChoppedLeek && endTime > 5f && eggAfterFive && leekAfterFive)
+        else if (isEgged && isChoppedLeek && endTime > 5f && eggAfterFive && leekAfterFive)
         {
             money = MONEY[5];
             customerTalking = VERY_NICE + " " + money.ToString() + "원 이야!";
         }
-        else if(isEgged && isChoppedLeek && endTime > 5f && (eggAfterFive || leekAfterFive))
+        else if (isEgged && isChoppedLeek && endTime > 5f && (eggAfterFive || leekAfterFive))
         {
             money = MONEY[4];
             customerTalking = mergeCustomerTalking(NO_SOUL, money);
         }
-        else if(isEgged && isChoppedLeek && endTime > 5f)
+        else if (isEgged && isChoppedLeek && endTime > 5f)
         {
             money = MONEY[3];
             customerTalking = mergeCustomerTalking(NO_SOUL, money);
         }
-        else if(isEgged && isChoppedLeek)
+        else if (isEgged && isChoppedLeek)
         {
             money = MONEY[2];
             customerTalking = mergeCustomerTalking(RAW, money);
         }
-        else if(isEgged && endTime > 8f)
+        else if (isEgged && endTime > 8f)
         {
             money = MONEY[2];
             customerTalking = mergeCustomerTalking(SALTY, money);
         }
-        else if(isEgged && endTime > 5f && eggAfterFive)
+        else if (isEgged && endTime > 5f && eggAfterFive)
         {
             money = MONEY[3];
             customerTalking = mergeCustomerTalking(SIMPLE, money);
@@ -208,7 +218,7 @@ public class PotMoveTo : MonoBehaviour
             money = MONEY[0];
             customerTalking = mergeCustomerTalking(SALTY_EMPTY, money);
         }
-        else if(endTime > 5f)
+        else if (endTime > 5f)
         {
             money = MONEY[1];
             customerTalking = mergeCustomerTalking(SIMPLE, money);
@@ -227,31 +237,16 @@ public class PotMoveTo : MonoBehaviour
         isComp = false;
 
         // 원점으로 돌아오면서 냄비가 가만히 있으므로 true로 변경
-        isStatic = true; 
+        isStatic = true;
     }
 
-    private void formatPot() {
+    private void formatPot()
+    {
         ingredient.Find("water").gameObject.SetActive(false);
         ingredient.Find("soupedWater").gameObject.SetActive(false);
         ingredient.Find("souped").gameObject.SetActive(false);
         ingredient.Find("ramened").gameObject.SetActive(false);
         ingredient.Find("choppedLeek").gameObject.SetActive(false);
         ingredient.Find("egged").gameObject.SetActive(false);
-    }
-
-    Vector3[] positions = new Vector3[6];
-    bool Inclusion(Bounds source, Bounds target)
-    {
-        positions[0] = target.center + new Vector3(target.extents.x, 0f, 0f);
-        positions[1] = target.center + new Vector3(-target.extents.x, 0f, 0f);
-        positions[2] = target.center + new Vector3(0f, target.extents.y, 0f);
-        positions[3] = target.center + new Vector3(0f, -target.extents.y, 0f);
-        positions[4] = target.center + new Vector3(0f, 0f, target.extents.z);
-        positions[5] = target.center + new Vector3(0f, 0f, -target.extents.z);
-
-        foreach (Vector3 pos in positions)
-            if (!source.Contains(pos))
-                return false;
-        return true;
     }
 }
