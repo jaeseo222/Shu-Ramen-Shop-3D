@@ -14,6 +14,12 @@ public class SoundEffect : MonoBehaviour
 
     // 효과음 오디오 클립
     public AudioClip boilingWaterBgm;
+    public AudioClip eggBgm;
+    public AudioClip ramenBgm;
+    public AudioClip waterBgm;
+    public AudioClip soupBgm;
+    public AudioClip leekBgm;
+    public AudioClip moneyBgm;
 
     // Start is called before the first frame update
     void Awake()
@@ -35,4 +41,57 @@ public class SoundEffect : MonoBehaviour
             audioSource.Play();
         }
     }
+
+    public void eggAudio()
+    {
+        audioSource.clip = eggBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void ramenAudio()
+    {
+        audioSource.clip = ramenBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void waterAudio()
+    {
+        audioSource.clip = waterBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void soupAudio()
+    {
+        audioSource.clip = soupBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+    public void leekAudio()
+    {
+        audioSource.clip = leekBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+    public void moneyAudio()
+    {
+        audioSource.clip = moneyBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
 }

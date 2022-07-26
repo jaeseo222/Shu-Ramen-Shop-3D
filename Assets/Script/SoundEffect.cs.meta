@@ -3,7 +3,15 @@ guid: 2f52191e0060c2c4a97d7a0f13441c83
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - audioSource: {instanceID: 0}
+  - boilingWaterBgm: {fileID: 8300000, guid: fcff9184b81af0441ae7d706524ebc1e, type: 3}
+  - eggBgm: {fileID: 8300000, guid: dd20aaeda6331274a822d0bdfdce903e, type: 3}
+  - ramenBgm: {fileID: 8300000, guid: 57f84171d8e64364b8bfcb0ad9437091, type: 3}
+  - waterBgm: {fileID: 8300000, guid: c0f29560052eca5448d66b4675cf363f, type: 3}
+  - soupBgm: {fileID: 8300000, guid: 3d17407790181964b86a5dd4192d1899, type: 3}
+  - leekBgm: {fileID: 8300000, guid: a1f00927a8efec441ba7ee832663d216, type: 3}
+  - moneyBgm: {fileID: 8300000, guid: 5b4ada30537fb3a4ea6063966ed733f2, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
