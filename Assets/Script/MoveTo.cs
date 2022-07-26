@@ -41,6 +41,12 @@ public class MoveTo : MonoBehaviour
     {
         Transform pot = GameObject.Find(name).transform;//냄비
 
+        // 탄 냄비라면 리턴
+        if(pot.parent.name == "BlackPots")
+        {
+            return;
+        }
+
         float time = pot.GetComponent<PotMoveTo>().time;
 
         Debug.Log("음식 넣은 시간: " + time);
