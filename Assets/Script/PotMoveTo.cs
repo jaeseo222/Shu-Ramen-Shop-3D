@@ -20,6 +20,7 @@ public class PotMoveTo : MonoBehaviour
     private string customerTalking = ""; // 손님 말
 
     // 손님 말 종류
+    private const string BURN = "탄 걸 어떻게 먹어? 너나 먹어!";
     private const string FAIL = "지금 장난해?";
     private const string EMPTY_RAW = "먼가가 허전하고 안 익었짜나!";
     private const string SALTY_EMPTY = "켁, 넘 짜! 그리고 먼가 허전해!";
@@ -40,6 +41,9 @@ public class PotMoveTo : MonoBehaviour
     // 물 끓는 소리
     private AudioSource audioSource;
     public AudioClip boilingBgm;
+
+    // 탄 시간 기준
+    private const float BURN_TIME = 15f;
     
     private void Start()
     {
@@ -71,6 +75,7 @@ public class PotMoveTo : MonoBehaviour
                 isComp = true;
                 MoveToComp();
                 Invoke("MoveOriginPos", 1.0f);
+                Invoke("burnPotManager", 1.0f);
                 Invoke("formatPot", 1.0f);
             }
         }
@@ -109,31 +114,19 @@ public class PotMoveTo : MonoBehaviour
             audioSource.clip = boilingBgm;
             audioSource.Play();
         }
+
+        // 탄 냄비 보여주기
+        if(time > BURN_TIME)
+        {
+            this.gameObject.SetActive(false);
+            int childNum = transform.GetSiblingIndex();
+            GameObject.Find("BlackPots").transform.GetChild(childNum).gameObject.SetActive(true);
+        }
     }
 
     private void MoveToComp()
     {
-        ExtraPot extraPotScript = GameObject.Find("GameManager").GetComponent<ExtraPot>();
-        int child = extraPotScript.extraPotIndex;
-
-        // 냄비가 탔다면 -> 남은 냄비 깎기
-        if (time > 10f && child >= 0)
-        {
-            extraPotScript.extraPotObj.transform.GetChild(child).gameObject.SetActive(false);
-            extraPotScript.extraPotIndex--;
-
-             //Debug.Log("남은 냄비 수: " + extraPotScript.extraPotIndex);
-        }
-
-        // 남은 냄비 있는 경우만 원상복구
-        if (child >= 0)
-        {
-            transform.position = new Vector3(9.56f, -2.97f, -1.26f);
-        }
-        else // 다 떨어졌다면 냄비 비활성화
-        {
-            this.gameObject.SetActive(false);
-        }
+        transform.position = new Vector3(9.56f, -2.97f, -1.26f);
 
         // 판정
         money = getMoney(time, eggAfterFive, leekAfterFive);
@@ -155,12 +148,6 @@ public class PotMoveTo : MonoBehaviour
         customerObject.GetComponent<Text>().text = customerTalking;
 
         Invoke("deleteChat", 0.7f);
-            
-        // 시간 및 판정 변수 초기화
-        time = 0f;
-        isStart = false;
-        eggAfterFive = false;
-        leekAfterFive = false;
 
         //애니메이션 추가
     }
@@ -177,6 +164,13 @@ public class PotMoveTo : MonoBehaviour
 
     private int getMoney(float endTime, bool eggAfterFive, bool leekAfterFive)
     {
+        // 탄 냄비라면
+        if (transform.parent.name == "BlackPots")
+        {
+            customerTalking = BURN;
+            return 0;
+        }
+
         // 냄비에 재료 담긴 여부 파악
         bool isSoupedWater = ingredient.Find("soupedWater").gameObject.activeSelf;
         bool isRamened = ingredient.Find("ramened").gameObject.activeSelf;
@@ -280,15 +274,74 @@ public class PotMoveTo : MonoBehaviour
 
         // 원점으로 돌아오면서 냄비가 가만히 있으므로 true로 변경
         isStatic = true;
+
+        // 탄 냄비라면 -> 기존 냄비로 바뀌게
+        if(transform.parent.name == "BlackPots")
+        {
+            // 탄 냄비 비활성화
+            this.gameObject.SetActive(false);
+            // 자식 번호 알아내기
+            int childNum = transform.GetSiblingIndex();
+            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(true);
+            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.GetComponent<PotMoveTo>().formatPot();
+        }
+    }
+
+    private void burnPotManager()
+    {
+        // 탄 냄비라면
+        if (transform.parent.name == "BlackPots")
+        {
+            // 탄 냄비 비활성화
+            this.gameObject.SetActive(false);
+            // 자식 번호 알아내기
+            int childNum = transform.GetSiblingIndex();
+
+            // 남은 냄비 오브젝트 관리하는 스크립트
+            ExtraPot extraPotScript = GameObject.Find("GameManager").GetComponent<ExtraPot>();
+            int extraPotIndex = extraPotScript.extraPotIndex;
+
+            // 남은 냄비 있을 경우만 원상복구
+            if (extraPotIndex >= 0)
+            {
+                GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(true);
+                GameObject.Find("Pots").transform.GetChild(childNum).gameObject.GetComponent<PotMoveTo>().formatPot();
+
+                // 남은 냄비 없애기
+                extraPotScript.extraPotObj.transform.GetChild(extraPotIndex).gameObject.SetActive(false);
+                extraPotScript.extraPotIndex--;
+            }
+        }
+
+        // 남은 냄비가 없다면 -> 원상 복구 안되고 탄거 기존꺼 다 사라짐
+        if (GameObject.Find("GameManager").GetComponent<ExtraPot>().extraPotIndex < 0)
+        {
+            int childNum = transform.GetSiblingIndex();
+            this.gameObject.SetActive(false);
+            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(false);
+            GameObject.Find("BlackPots").transform.GetChild(childNum).gameObject.SetActive(false);
+        }
     }
 
     private void formatPot()
     {
-        ingredient.Find("water").gameObject.SetActive(false);
-        ingredient.Find("soupedWater").gameObject.SetActive(false);
-        ingredient.Find("souped").gameObject.SetActive(false);
-        ingredient.Find("ramened").gameObject.SetActive(false);
-        ingredient.Find("choppedLeek").gameObject.SetActive(false);
-        ingredient.Find("egged").gameObject.SetActive(false);
+        // 시간 및 판정 변수 초기화
+        time = 0f;
+        isStart = false;
+        eggAfterFive = false;
+        leekAfterFive = false;
+
+        if (transform.parent.name == "BlackPots")
+        {
+            return;
+        }
+
+        // 냄비 속 초기화
+        transform.Find("water").gameObject.SetActive(false);
+        transform.Find("soupedWater").gameObject.SetActive(false);
+        transform.Find("souped").gameObject.SetActive(false);
+        transform.Find("ramened").gameObject.SetActive(false);
+        transform.Find("choppedLeek").gameObject.SetActive(false);
+        transform.Find("egged").gameObject.SetActive(false);
     }
 }
