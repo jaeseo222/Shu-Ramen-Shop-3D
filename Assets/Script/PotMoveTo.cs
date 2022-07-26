@@ -36,6 +36,10 @@ public class PotMoveTo : MonoBehaviour
     // 손님 말풍선
     private GameObject customerObject; //텍스트
     private GameObject customerChatObj; //배경 말풍선
+
+    // 물 끓는 소리
+    private AudioSource audioSource;
+    public AudioClip boilingBgm;
     
     private void Start()
     {
@@ -45,6 +49,8 @@ public class PotMoveTo : MonoBehaviour
 
         customerChatObj = GameObject.Find("Canvas").transform.Find("CustomerChat").gameObject;
         customerObject = customerChatObj.transform.Find("Text").gameObject;
+
+        audioSource = this.gameObject.GetComponent<AudioSource>();
     }
 
     private void OnTriggerStay(Collider other)
@@ -93,6 +99,16 @@ public class PotMoveTo : MonoBehaviour
             }
             time += Time.deltaTime;
         }
+
+        if (time == 0f)
+        {
+            audioSource.Stop();
+        }
+        if (time > 5f && !audioSource.isPlaying)
+        {
+            audioSource.clip = boilingBgm;
+            audioSource.Play();
+        }
     }
 
     private void MoveToComp()
@@ -121,6 +137,12 @@ public class PotMoveTo : MonoBehaviour
 
         // 판정
         money = getMoney(time, eggAfterFive, leekAfterFive);
+
+        if (money > 0)
+        {
+            // 돈 올라가는 효과음
+            SoundEffect._soundEffect.moneyAudio();
+        }
 
         // 판정 결과 출력
         // Debug.Log("번 돈: " + money + ", 멘트: " + customerTalking);

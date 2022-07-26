@@ -51,9 +51,11 @@ public class MoveTo : MonoBehaviour
             case "waterPot"://물 -> 타이머 시작
                 pot.GetComponent<PotMoveTo>().isStart = true;
                 pot.Find("water").gameObject.SetActive(true);
+                SoundEffect._soundEffect.waterAudio();
                 break;
             case "soup"://스프
                 pot.Find("souped").gameObject.SetActive(true);
+                SoundEffect._soundEffect.soupAudio();
                 break;
             case "leek"://파
                 pot.Find("choppedLeek").gameObject.SetActive(true);
@@ -62,6 +64,7 @@ public class MoveTo : MonoBehaviour
                     pot.GetComponent<PotMoveTo>().leekAfterFive = true;
 
                 }
+                SoundEffect._soundEffect.leekAudio();
                 break;
             case "egg"://계란
                 pot.Find("egged").gameObject.SetActive(true);
@@ -70,9 +73,11 @@ public class MoveTo : MonoBehaviour
                     pot.GetComponent<PotMoveTo>().eggAfterFive = true;
 
                 }
+                SoundEffect._soundEffect.eggAudio();
                 break;
             case "ramen"://면
                 pot.Find("ramened").gameObject.SetActive(true);
+                SoundEffect._soundEffect.ramenAudio();
                 break;
         }
         //스프 + 물
