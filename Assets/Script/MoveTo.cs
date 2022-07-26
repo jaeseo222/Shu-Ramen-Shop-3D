@@ -13,19 +13,30 @@ public class MoveTo : MonoBehaviour
         originPos = this.gameObject.transform.position;//원래위치 저장해놓기
         isPot = false;
     }
-
     private void OnTriggerStay(Collider other)
     {
-        if (Input.GetMouseButtonUp(0))
-            if (Inclusion(other.bounds, transform.GetComponent<Collider>().bounds))
-                if (other.tag == "pot")
-                {
-                    isPot = true;
-                    PotFill(gameObj, other.gameObject.name);
-                    Invoke("MoveOriginPos", 1.0f);
-                }
-    }
+        // other.bounds : 콜라이더의 중심 좌표와 콜라이더의 사이즈의 반
+        // other.center : 콜라이더의 중심 좌표
+        // other.extents : 콜라이더 사이즈의 반
 
+        // 마우스 뗐을 때
+        // 내가 드래그 하고 있는 오브젝트의 콜라이더의 센터가 충돌 오브젝트의 콜라이더 내에 있는지 체크
+        // 주전자는 주둥이로 판단하기 위해 콜라이더의 센터 z+0.5f가 충돌 오브젝트의 콜라이더 내에 있는지 체크
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (other.tag != "pot")
+            {
+                return;
+            }
+            if (!other.bounds.Contains(centerMove(transform.GetComponent<Collider>().bounds.center)))
+            {
+                return;
+            }
+            isPot = true;
+            PotFill(gameObj, other.gameObject.name);
+            Invoke("MoveOriginPos", 1.0f);
+        }
+    }
     private void PotFill(GameObject gameObj, string name)
     {
         Transform pot = GameObject.Find(name).transform;//냄비
@@ -54,7 +65,7 @@ public class MoveTo : MonoBehaviour
                 break;
             case "egg"://계란
                 pot.Find("egged").gameObject.SetActive(true);
-                if(time >= 5f)
+                if (time >= 5f)
                 {
                     pot.GetComponent<PotMoveTo>().eggAfterFive = true;
 
@@ -84,19 +95,11 @@ public class MoveTo : MonoBehaviour
         transform.position = originPos;
         isPot = false;
     }
-    Vector3[] positions = new Vector3[6];
-    bool Inclusion(Bounds source, Bounds target)
+    Vector3 centerMove(Vector3 source)
     {
-        positions[0] = target.center + new Vector3(target.extents.x, 0f, 0f);
-        positions[1] = target.center + new Vector3(-target.extents.x, 0f, 0f);
-        positions[2] = target.center + new Vector3(0f, target.extents.y, 0f);
-        positions[3] = target.center + new Vector3(0f, -target.extents.y, 0f);
-        positions[4] = target.center + new Vector3(0f, 0f, target.extents.z);
-        positions[5] = target.center + new Vector3(0f, 0f, -target.extents.z);
-
-        foreach (Vector3 pos in positions)
-            if (!source.Contains(pos))
-                return false;
-        return true;
+        if (this.gameObject.name == "waterPot")
+            return new Vector3(source.x, source.y, source.z + 0.8f);
+        else
+            return source;
     }
 }
