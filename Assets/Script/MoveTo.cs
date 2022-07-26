@@ -21,20 +21,22 @@ public class MoveTo : MonoBehaviour
 
         // 마우스 뗐을 때
         // 내가 드래그 하고 있는 오브젝트의 콜라이더의 센터가 충돌 오브젝트의 콜라이더 내에 있는지 체크
+        // 주전자는 주둥이로 판단하기 위해 콜라이더의 센터 z+0.5f가 충돌 오브젝트의 콜라이더 내에 있는지 체크
         if (Input.GetMouseButtonUp(0))
         {
-            if (Inclusion(other.bounds, transform.GetComponent<Collider>().bounds.center))
+            if (other.tag != "pot")
             {
-                if (other.tag == "pot")
-                {
-                    isPot = true;
-                    PotFill(gameObj, other.gameObject.name);
-                    Invoke("MoveOriginPos", 1.0f);
-                }
+                return;
             }
+            if (!other.bounds.Contains(centerMove(transform.GetComponent<Collider>().bounds.center)))
+            {
+                return;
+            }
+            isPot = true;
+            PotFill(gameObj, other.gameObject.name);
+            Invoke("MoveOriginPos", 1.0f);
         }
     }
-
     private void PotFill(GameObject gameObj, string name)
     {
         Transform pot = GameObject.Find(name).transform;//냄비
@@ -93,13 +95,11 @@ public class MoveTo : MonoBehaviour
         transform.position = originPos;
         isPot = false;
     }
-
-    bool Inclusion(Bounds target, Vector3 source)
+    Vector3 centerMove(Vector3 source)
     {
-        if ((source.x <= target.center.x + target.extents.x && source.x >= target.center.x - target.extents.x)
-            && (source.y <= target.center.y + target.extents.y && source.y >= target.center.y - target.extents.y)
-            && (source.z <= target.center.z + target.extents.z && source.z >= target.center.z - target.extents.z))
-            return true;
-        return false;
+        if (this.gameObject.name == "waterPot")
+            return new Vector3(source.x, source.y, source.z + 0.8f);
+        else
+            return source;
     }
 }
