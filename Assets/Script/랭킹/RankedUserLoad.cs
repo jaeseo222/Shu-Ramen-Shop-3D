@@ -57,6 +57,11 @@ public class RankedUserLoad : MonoBehaviour
         }
     }
 
+    public void onUpdateUserScore()
+    {
+        StartCoroutine(UserScorePostApi());
+    }
+
     // 랭킹 매겨진 유저 정보 get 요청 
     IEnumerator RankingGetApi()
     {
@@ -168,7 +173,46 @@ public class RankedUserLoad : MonoBehaviour
     }
 
     // 유저 점수 업데이트 post api
+    IEnumerator UserScorePostApi()
+    {
+        UnityWebRequest request;
 
+        ScoreInfo user = new ScoreInfo
+        {
+            name = userName,
+            restaurant = TotalMoney.restaurantMoney,
+            founded = TotalMoney.foundedMoney,
+            part_time = TotalMoney.partTimeMoney
+        };
+        string json = JsonUtility.ToJson(user);
+
+
+        using (request = UnityWebRequest.Post("https://shu-ramen-3d.herokuapp.com/users/rank", json))
+        {
+            byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            request.uploadHandler = new UploadHandlerRaw(jsonToSend);
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            request.SetRequestHeader("Content-Type", "application/json");
+
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError)
+            {
+                Debug.Log(request.error);
+            }
+            else
+            {
+                if (request.responseCode == 200)
+                {
+                    Debug.Log(request.downloadHandler.text);
+                }
+                else
+                {
+                    Debug.Log("요청 실패");
+                }
+            }
+        }
+    }
 
     public string GetThousandCommaText(int data) 
     { 
