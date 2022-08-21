@@ -7,11 +7,16 @@ public class MoveTo : MonoBehaviour
     private GameObject gameObj;
     private Vector3 originPos;//원래 위치
     public bool isPot;
+    private Animator animator;
+    public Transform pot; // 재료를 갖다 댄 냄비 위치
+    private Transform[] allChildren;
 
     private void Start()
     {
         originPos = this.gameObject.transform.position;//원래위치 저장해놓기
         isPot = false;
+        if(gameObject.GetComponent<Animator>())
+        animator = gameObject.GetComponent<Animator>();
     }
     private void OnTriggerStay(Collider other)
     {
@@ -34,15 +39,15 @@ public class MoveTo : MonoBehaviour
             }
             isPot = true;
             PotFill(gameObj, other.gameObject.name);
-            Invoke("MoveOriginPos", 1.0f);
+            Invoke("MoveOriginPos", 0.6f);
         }
     }
     private void PotFill(GameObject gameObj, string name)
     {
-        Transform pot = GameObject.Find(name).transform;//냄비
+        pot=GameObject.Find(name).transform;//냄비
 
         // 탄 냄비라면 리턴
-        if(pot.parent.name == "BlackPots")
+        if (pot.parent.name == "BlackPots")
         {
             return;
         }
@@ -62,28 +67,36 @@ public class MoveTo : MonoBehaviour
             case "soup"://스프
                 pot.Find("souped").gameObject.SetActive(true);
                 SoundEffect._soundEffect.soupAudio();
+                // 애니메이션 시작
+                OnHandlerAnimation();
                 break;
             case "leek"://파
-                pot.Find("choppedLeek").gameObject.SetActive(true);
+                Invoke("OnHandlerSetActiveLeek", 0.4f);
                 if (time >= 5f)
                 {
                     pot.GetComponent<PotMoveTo>().leekAfterFive = true;
 
                 }
                 SoundEffect._soundEffect.leekAudio();
+                // 애니메이션
+                OnHandlerAnimation();
                 break;
             case "egg"://계란
-                pot.Find("egged").gameObject.SetActive(true);
+                Invoke("OnHandlerSetActiveEgg", 0.6f);
                 if (time >= 5f)
                 {
                     pot.GetComponent<PotMoveTo>().eggAfterFive = true;
 
                 }
                 SoundEffect._soundEffect.eggAudio();
+                // 애니메이션 시작
+                OnHandlerAnimation();
                 break;
             case "ramen"://면
-                pot.Find("ramened").gameObject.SetActive(true);
+                Invoke("OnHandlerSetActiveRamened", 0.6f);
                 SoundEffect._soundEffect.ramenAudio();
+                // 애니메이션
+                OnHandlerAnimation();
                 break;
         }
         //스프 + 물
@@ -112,5 +125,28 @@ public class MoveTo : MonoBehaviour
             return new Vector3(source.x, source.y, source.z + 0.8f);
         else
             return source;
+    }
+    private void OnHandlerSetActiveRamened() {
+        pot.Find("ramened").gameObject.SetActive(true);
+    }
+    private void OnHandlerSetActiveLeek()
+    {
+        pot.Find("choppedLeek").gameObject.SetActive(true);
+    }
+    private void OnHandlerSetActiveEgg()
+    {
+        pot.Find("egged").gameObject.SetActive(true);
+    }
+    private void OnHandlerAnimation() {
+        allChildren = gameObject.GetComponentsInChildren<Transform>();
+        // 애니메이션
+        foreach (Transform child in allChildren)
+        {
+            // 자기 자신도 반환하기 때문에 패스
+            if (child.name == gameObject.transform.name)
+                continue;
+            animator = child.gameObject.GetComponent<Animator>();
+            animator.SetTrigger("IsAct");
+        }
     }
 }
