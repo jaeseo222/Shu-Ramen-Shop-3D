@@ -6,6 +6,10 @@ using UnityEngine.UI;
 public class TotalMoney : MonoBehaviour
 {
     public static int totalMoney = 0;
+    public static int restaurantMoney = 0;
+    public static int foundedMoney = 0;
+    public static int partTimeMoney = 0;
+
     public GameObject totalMoneyObj;
 
     // Start is called before the first frame update

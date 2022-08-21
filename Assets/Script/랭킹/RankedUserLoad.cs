@@ -21,8 +21,8 @@ public class RankedUserLoad : MonoBehaviour
     // 랭킹 보드 판
     public GameObject RankingBoard;
 
-    // 임시 이름
-    private string userName = "test5";
+    // 이름
+    private string userName = "";
     
     [Serializable]
     class User
@@ -51,6 +51,8 @@ public class RankedUserLoad : MonoBehaviour
         }
         else
         {
+            // 유저 이름 로컬에서 가져오기
+            userName = PlayerPrefs.GetString("name");
             StartCoroutine(RankingGetApi());
         }
     }
@@ -164,6 +166,9 @@ public class RankedUserLoad : MonoBehaviour
         StartCoroutine(LoadMyRankingBoard());
         yield return null;
     }
+
+    // 유저 점수 업데이트 post api
+
 
     public string GetThousandCommaText(int data) 
     { 

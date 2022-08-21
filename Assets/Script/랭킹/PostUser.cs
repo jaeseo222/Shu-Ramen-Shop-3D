@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
-
 public class PostUser : MonoBehaviour
 {
     public Text userName;
@@ -48,7 +47,6 @@ public class PostUser : MonoBehaviour
 
         using (request = UnityWebRequest.Post("https://shu-ramen-3d.herokuapp.com/users", json))
         {
-            Debug.Log(json);
             byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             request.uploadHandler = new UploadHandlerRaw(jsonToSend);
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -70,6 +68,7 @@ public class PostUser : MonoBehaviour
                         // 등록 완료 팝업 1초 정도 뜨고
                         // 메인화면으로 넘어가기
                         DonePopup.SetActive(true);
+                        PlayerPrefs.SetString("name", user.name); // 로컬에 이름 저장
                         Invoke("ChangeSceneMain", 1f);
                     }
                     else
