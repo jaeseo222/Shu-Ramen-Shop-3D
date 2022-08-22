@@ -4,45 +4,63 @@ using UnityEngine;
 
 public class FirstPerson : MonoBehaviour
 {
-    public float turnSpeed = 4.0f; // 마우스 회전 속도
-    public float moveSpeed = 2.0f; // 이동 속도
+    public Rigidbody playerRigidbody;
+    public Camera fpsCam;
 
-    private float xRotate = 0.0f; // 내부 사용할 X축 회전량은 별도 정의 ( 카메라 위 아래 방향 )
+    float MoveSpeed;
+    float rotSpeed;
+    float currentRot;
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        MoveSpeed = 20.0f;
+        rotSpeed = 3.0f;
+        currentRot = 0f;
+    }
+
+    // Update is called once per frame
     void Update()
     {
-        MouseRotation();
-        KeyboardMove();
+        PlayerMove();
+        RotCtrl();
     }
 
-    // 마우스의 움직임에 따라 카메라를 회전 시킨다.
-    void MouseRotation()
+    void PlayerMove()
     {
-        // 좌우로 움직인 마우스의 이동량 * 속도에 따라 카메라가 좌우로 회전할 양 계산
-        float yRotateSize = Input.GetAxis("Mouse X") * turnSpeed;
-        // 현재 y축 회전값에 더한 새로운 회전각도 계산
-        float yRotate = transform.eulerAngles.y + yRotateSize;
+        float xInput = Input.GetAxis("Horizontal");
+        float zInput = Input.GetAxis("Vertical");
 
-        // 위아래로 움직인 마우스의 이동량 * 속도에 따라 카메라가 회전할 양 계산(하늘, 바닥을 바라보는 동작)
-        float xRotateSize = -Input.GetAxis("Mouse Y") * turnSpeed;
-        // 위아래 회전량을 더해주지만 -45도 ~ 80도로 제한 (-45:하늘방향, 80:바닥방향)
-        // Clamp 는 값의 범위를 제한하는 함수
-        xRotate = Mathf.Clamp(xRotate + xRotateSize, -45, 80);
+        float xSpeed = xInput * MoveSpeed;
+        float zSpeed = zInput * MoveSpeed;
 
-        // 카메라 회전량을 카메라에 반영(X, Y축만 회전)
-        transform.eulerAngles = new Vector3(xRotate, yRotate, 0);
+        Vector3 objPosition = new Vector3(transform.position.x + xSpeed * Time.deltaTime, 
+            transform.position.y, 
+            transform.position.z + zSpeed * Time.deltaTime);
+
+        //transform.Translate(Vector3.forward * zSpeed * Time.deltaTime);
+        //transform.Translate(Vector3.right * xSpeed * Time.deltaTime);
+
+        playerRigidbody.MovePosition(objPosition);
     }
 
-    // 키보드의 눌림에 따라 이동
-    void KeyboardMove()
+    void RotCtrl()
     {
-        // WASD 키 또는 화살표키의 이동량을 측정
-        Vector3 dir = new Vector3(
-            Input.GetAxis("Horizontal"),
-            0,
-            Input.GetAxis("Vertical")
-        );
-        // 이동방향 * 속도 * 프레임단위 시간을 곱해서 카메라의 트랜스폼을 이동
-        transform.Translate(dir * moveSpeed * Time.deltaTime);
+        float rotX = Input.GetAxis("Mouse Y") * rotSpeed;
+        float rotY = Input.GetAxis("Mouse X") * rotSpeed;
+
+        // 마우스 반전
+        currentRot -= rotX;
+
+        // 마우스가 특정 각도를 넘어가지 않게 예외처리
+        currentRot = Mathf.Clamp(currentRot, -80f, 80f);
+
+        // Camera는 Player의 자식이므로 플레이어의 Y축 회전은 Camera에게도 똑같이 적용됨
+        this.transform.localRotation *= Quaternion.Euler(0, rotY, 0);
+        // Camera의 transform 컴포넌트의 로컬로테이션의 오일러각에 
+        // 현재X축 로테이션을 나타내는 오일러각을 할당해준다.
+        fpsCam.transform.localEulerAngles = new Vector3(currentRot, 0f, 0f);
     }
+
+
 }
