@@ -15,7 +15,7 @@ public class FirstPerson : MonoBehaviour
     void Start()
     {
         MoveSpeed = 20.0f;
-        rotSpeed = 3.0f;
+        rotSpeed = 0.8f;
         currentRot = 0f;
     }
 
