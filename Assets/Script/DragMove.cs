@@ -6,14 +6,14 @@ using UnityEngine.SceneManagement;
 public class DragMove : MonoBehaviour
 { 
     // Play Scene
-    private float PLAY_DISTANCE = 14f;
-    private float PLAY_POSITION_UP = -0.0f;
-    private float PLAY_POSITION_DOWN = -3.5f;
+    private const float PLAY_DISTANCE = 14f;
+    private const float PLAY_POSITION_UP = -0.0f;
+    private const float PLAY_POSITION_DOWN = -3.5f;
 
     // Tutorial Scene
-    private float TUTORIAL_DISTANCE = 22f;
-    private float TUTORIAL_POSITION_UP = 1.5f;
-    private float TUTORIAL_POSITION_DOWN = -1f;
+    private const float TUTORIAL_DISTANCE = 22f;
+    private const float TUTORIAL_POSITION_UP = 1.5f;
+    private const float TUTORIAL_POSITION_DOWN = -1f;
 
     private float distance; // 화면에 보이는 거리
     private float defaultDistance; // 화면에 보이는 default 거리
