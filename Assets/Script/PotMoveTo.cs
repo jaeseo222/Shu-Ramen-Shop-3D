@@ -75,6 +75,7 @@ public class PotMoveTo : MonoBehaviour
             }
             if ((other.bounds.Contains(transform.GetComponent<Collider>().bounds.center)))
             {
+                Debug.Log("부딪힘!");
                 isComp = true;
                 MoveToComp();
                 Invoke("MoveOriginPos", 1.0f);

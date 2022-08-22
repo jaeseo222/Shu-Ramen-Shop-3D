@@ -39,7 +39,7 @@ public class MoveTo : MonoBehaviour
             }
             isPot = true;
             PotFill(gameObj, other.gameObject.name);
-            Invoke("MoveOriginPos", 0.6f);
+            Invoke("MoveOriginPos", 0.35f);
         }
     }
     private void PotFill(GameObject gameObj, string name)
@@ -60,9 +60,11 @@ public class MoveTo : MonoBehaviour
         switch (gameObject.name)
         {
             case "waterPot"://물 -> 타이머 시작
-                pot.GetComponent<PotMoveTo>().isStart = true;
                 pot.Find("water").gameObject.SetActive(true);
+                pot.GetComponent<PotMoveTo>().isStart = true;
                 SoundEffect._soundEffect.waterAudio();
+                // 애니메이션 시작
+                OnHandlerAnimation();
                 break;
             case "soup"://스프
                 pot.Find("souped").gameObject.SetActive(true);
@@ -82,7 +84,7 @@ public class MoveTo : MonoBehaviour
                 OnHandlerAnimation();
                 break;
             case "egg"://계란
-                Invoke("OnHandlerSetActiveEgg", 0.6f);
+                Invoke("OnHandlerSetActiveEgg", 0.4f);
                 if (time >= 5f)
                 {
                     pot.GetComponent<PotMoveTo>().eggAfterFive = true;
@@ -93,7 +95,7 @@ public class MoveTo : MonoBehaviour
                 OnHandlerAnimation();
                 break;
             case "ramen"://면
-                Invoke("OnHandlerSetActiveRamened", 0.6f);
+                Invoke("OnHandlerSetActiveRamened", 0.4f);
                 SoundEffect._soundEffect.ramenAudio();
                 // 애니메이션
                 OnHandlerAnimation();

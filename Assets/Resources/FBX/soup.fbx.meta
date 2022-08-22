@@ -4,23 +4,11 @@ ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: -8881751905878624957
-    second: soup|leek001|leek001|ActionLeek001|leek001|ActionLeek001
-  - first:
-      74: -3416593293584833323
-    second: soup|leek001|leek001|ActionLeek002|leek001|ActionLeek002
-  - first:
-      74: 938233490332825738
-    second: soup|leek001|leek001|ActionLeek003|leek001|ActionLeek003
-  - first:
-      74: -8246353721091161436
-    second: soup|leek001|leek001|ActionLeek004|leek001|ActionLeek004
-  - first:
-      74: 6371678748574277514
-    second: soup|leek001|leek001|ActionLeek|leek001|ActionLeek
-  - first:
       74: -8216965057965626293
     second: soup|soupAction
+  - first:
+      74: -7742053052712182691
+    second: soup|Standsoup
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -48,36 +36,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: soup|soupAction
-      takeName: soup|soupAction
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 0
   meshes:
     lODScreenPercentages: []

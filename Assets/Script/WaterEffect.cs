@@ -24,7 +24,6 @@ public class WaterEffect : MonoBehaviour
         // 시간에 따라 끓고 있는 애니메이션 실행
         if (time >= 0f && time <= 1f)
         {
-            Debug.Log("asdf");
             transform.Find("waterFill").gameObject.SetActive(true);// 물 채워지는 애니메이션
         }
         if(!transform.Find("waterFill").gameObject.activeSelf)

@@ -4,11 +4,14 @@ ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
-      74: -2229403323812991085
-    second: water|ActionWater
-  - first:
       74: -7043049695346409154
     second: water|ActionYellPot
+  - first:
+      74: 1326131413442206361
+    second: water|StandYellPot
+  - first:
+      74: -2229403323812991085
+    second: water|ActionWater
   externalObjects: {}
   materials:
     materialImportMode: 1

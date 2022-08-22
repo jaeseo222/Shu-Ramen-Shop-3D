@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: -7593752923254541885
     second: yellPot|ActionYellPot
+  - first:
+      74: -6648762992826169913
+    second: yellPot|StandYellPot
   externalObjects: {}
   materials:
     materialImportMode: 1
