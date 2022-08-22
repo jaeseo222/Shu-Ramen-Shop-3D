@@ -32,7 +32,7 @@ public class PotMoveTo : MonoBehaviour
     private const string VERY_NICE = "아주 좋아~";
 
     // 돈
-    private readonly int [] MONEY = { 300, 400, 500, 600, 800, 1000 };
+    private readonly int[] MONEY = { 300, 400, 500, 600, 800, 1000 };
 
     // 손님 말풍선
     private GameObject customerObject; //텍스트
@@ -44,7 +44,10 @@ public class PotMoveTo : MonoBehaviour
 
     // 탄 시간 기준
     private const float BURN_TIME = 15f;
-    
+
+    // 오브젝트 자식
+    private Transform[] allChildren;
+
     private void Start()
     {
         ingredient = transform;
@@ -72,6 +75,7 @@ public class PotMoveTo : MonoBehaviour
             }
             if ((other.bounds.Contains(transform.GetComponent<Collider>().bounds.center)))
             {
+                Debug.Log("부딪힘!");
                 isComp = true;
                 MoveToComp();
                 Invoke("MoveOriginPos", 1.0f);
@@ -116,7 +120,7 @@ public class PotMoveTo : MonoBehaviour
         }
 
         // 탄 냄비 보여주기
-        if(time > BURN_TIME)
+        if (time > BURN_TIME)
         {
             this.gameObject.SetActive(false);
             int childNum = transform.GetSiblingIndex();
@@ -126,7 +130,7 @@ public class PotMoveTo : MonoBehaviour
 
     private void MoveToComp()
     {
-        transform.position = new Vector3(9.56f, -2.97f, -1.26f);
+        transform.position = new Vector3(9.56f, -2.67f, -1.26f);
 
         // 판정
         money = getMoney(time, eggAfterFive, leekAfterFive);
@@ -142,7 +146,7 @@ public class PotMoveTo : MonoBehaviour
 
         // 전체 돈에 추가
         TotalMoney.totalMoney += money;
-        
+
         // 판정 결과 말풍선에 띄우기
         customerChatObj.SetActive(true);
         customerObject.GetComponent<Text>().text = customerTalking;
@@ -276,7 +280,7 @@ public class PotMoveTo : MonoBehaviour
         isStatic = true;
 
         // 탄 냄비라면 -> 기존 냄비로 바뀌게
-        if(transform.parent.name == "BlackPots")
+        if (transform.parent.name == "BlackPots")
         {
             // 탄 냄비 비활성화
             this.gameObject.SetActive(false);
@@ -335,10 +339,25 @@ public class PotMoveTo : MonoBehaviour
         {
             return;
         }
-
         // 냄비 속 초기화
         transform.Find("water").gameObject.SetActive(false);
+        Transform water = transform.Find("water");
+        water.Find("waterStand").gameObject.SetActive(false);
+        water.Find("waterFill").gameObject.SetActive(false);
+        water.Find("waterSky000").gameObject.SetActive(false);
+        water.Find("waterSky001").gameObject.SetActive(false);
+        water.Find("waterSky002").gameObject.SetActive(false);
+
         transform.Find("soupedWater").gameObject.SetActive(false);
+        water = transform.Find("soupedWater");
+        water.Find("waterStand").gameObject.SetActive(false);
+        water.Find("waterFill").gameObject.SetActive(false);
+        water.Find("waterSky000").gameObject.SetActive(false);
+        water.Find("waterSky001").gameObject.SetActive(false);
+        water.Find("waterSky002").gameObject.SetActive(false);
+
+
+
         transform.Find("souped").gameObject.SetActive(false);
         transform.Find("ramened").gameObject.SetActive(false);
         transform.Find("choppedLeek").gameObject.SetActive(false);
