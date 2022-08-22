@@ -47,7 +47,7 @@ public class FirstPerson : MonoBehaviour
     void RotCtrl()
     {
         float rotX = Input.GetAxis("Mouse Y") * rotSpeed;
-        float rotY = Input.GetAxis("Mouse X") * rotSpeed;
+        //float rotY = Input.GetAxis("Mouse X") * rotSpeed;
 
         // 마우스 반전
         currentRot -= rotX;
@@ -56,7 +56,7 @@ public class FirstPerson : MonoBehaviour
         currentRot = Mathf.Clamp(currentRot, -80f, 80f);
 
         // Camera는 Player의 자식이므로 플레이어의 Y축 회전은 Camera에게도 똑같이 적용됨
-        this.transform.localRotation *= Quaternion.Euler(0, rotY, 0);
+        //this.transform.localRotation *= Quaternion.Euler(0, rotY, 0);
         // Camera의 transform 컴포넌트의 로컬로테이션의 오일러각에 
         // 현재X축 로테이션을 나타내는 오일러각을 할당해준다.
         fpsCam.transform.localEulerAngles = new Vector3(currentRot, 0f, 0f);
