@@ -7,11 +7,14 @@ ModelImporter:
       74: -7043049695346409154
     second: water|ActionYellPot
   - first:
-      74: 1326131413442206361
-    second: water|StandYellPot
+      74: 7578119088126340240
+    second: water|StandWater
   - first:
       74: -2229403323812991085
     second: water|ActionWater
+  - first:
+      74: 1326131413442206361
+    second: water|StandYellPot
   externalObjects: {}
   materials:
     materialImportMode: 1
