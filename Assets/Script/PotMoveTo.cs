@@ -70,12 +70,16 @@ public class PotMoveTo : MonoBehaviour
             {
                 return;
             }
-            if ((other.bounds.Contains(transform.GetComponent<Collider>().bounds.center)))
+            if ((other.bounds.Contains(transform.GetComponent<Collider>().bounds.center)) && isComp == false)
             {
                 isComp = true;
                 MoveToComp();
+                // 탄 냄비라면
+                if (transform.parent.name == "BlackPots")
+                {
+                    Invoke("burnPotManager", 1.0f);
+                }
                 Invoke("MoveOriginPos", 1.0f);
-                Invoke("burnPotManager", 1.0f);
                 Invoke("formatPot", 1.0f);
             }
         }
@@ -84,7 +88,13 @@ public class PotMoveTo : MonoBehaviour
     private void OnMouseUp()
     {
         if (!isComp)
+        {
             MoveOriginPos();
+            if (transform.parent.name == "BlackPots")
+            {
+                burnPotActive();
+            }
+        }
     }
 
     private void OnMouseDown()
@@ -274,54 +284,37 @@ public class PotMoveTo : MonoBehaviour
 
         // 원점으로 돌아오면서 냄비가 가만히 있으므로 true로 변경
         isStatic = true;
-
-        // 탄 냄비라면 -> 기존 냄비로 바뀌게
-        if(transform.parent.name == "BlackPots")
-        {
-            // 탄 냄비 비활성화
-            this.gameObject.SetActive(false);
-            // 자식 번호 알아내기
-            int childNum = transform.GetSiblingIndex();
-            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(true);
-            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.GetComponent<PotMoveTo>().formatPot();
-        }
     }
 
     private void burnPotManager()
     {
-        // 탄 냄비라면
-        if (transform.parent.name == "BlackPots")
+        // 탄 냄비 비활성화
+        this.gameObject.SetActive(false);
+
+        // 남은 냄비 오브젝트 관리하는 스크립트
+        ExtraPot extraPotScript = GameObject.Find("GameManager").GetComponent<ExtraPot>();
+        int extraPotIndex = extraPotScript.extraPotIndex;
+
+        // 남은 냄비 있을 경우만 원상복구
+        if (extraPotIndex >= 0)
         {
-            // 탄 냄비 비활성화
-            this.gameObject.SetActive(false);
-            // 자식 번호 알아내기
-            int childNum = transform.GetSiblingIndex();
-
-            // 남은 냄비 오브젝트 관리하는 스크립트
-            ExtraPot extraPotScript = GameObject.Find("GameManager").GetComponent<ExtraPot>();
-            int extraPotIndex = extraPotScript.extraPotIndex;
-
-            // 남은 냄비 있을 경우만 원상복구
-            if (extraPotIndex >= 0)
-            {
-                GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(true);
-                GameObject.Find("Pots").transform.GetChild(childNum).gameObject.GetComponent<PotMoveTo>().formatPot();
-
-                // 남은 냄비 없애기
-                extraPotScript.extraPotObj.transform.GetChild(extraPotIndex).gameObject.SetActive(false);
-                extraPotScript.extraPotIndex--;
-            }
-        }
-
-        // 남은 냄비가 없다면 -> 원상 복구 안되고 탄거 기존꺼 다 사라짐
-        if (GameObject.Find("GameManager").GetComponent<ExtraPot>().extraPotIndex < 0)
-        {
-            int childNum = transform.GetSiblingIndex();
-            this.gameObject.SetActive(false);
-            GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(false);
-            GameObject.Find("BlackPots").transform.GetChild(childNum).gameObject.SetActive(false);
+            burnPotActive();
+            // 남은 냄비 없애기
+            extraPotScript.extraPotObj.transform.GetChild(extraPotIndex).gameObject.SetActive(false);
+            extraPotScript.extraPotIndex--;
         }
     }
+
+    private void burnPotActive()
+    {
+        // 탄 냄비 비활성화
+        this.gameObject.SetActive(false);
+        // 자식 번호 알아내기
+        int childNum = transform.GetSiblingIndex();
+        GameObject.Find("Pots").transform.GetChild(childNum).gameObject.SetActive(true);
+        GameObject.Find("Pots").transform.GetChild(childNum).gameObject.GetComponent<PotMoveTo>().formatPot();
+    }
+
 
     private void formatPot()
     {
