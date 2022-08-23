@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class StartMusic : MonoBehaviour
 {
+    private bool check = false;
     public void Awake()
     {
         // 씬 넘어가도 배경음악 계속 재생되도록
@@ -18,5 +21,20 @@ public class StartMusic : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "PlayScene" && check==false)
+        {
+            check = true;
+            gameObject.GetComponent<AudioSource>().Stop();
+        }else if(!gameObject.GetComponent<AudioSource>().isPlaying)
+        {
+            check = false;
+            gameObject.GetComponent<AudioSource>().Play();
+
+        }
+    }
+
 }
  

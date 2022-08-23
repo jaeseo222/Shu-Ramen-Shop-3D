@@ -6,18 +6,30 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StartScene.unity
-    guid: a909dfbaf5906ce44a9df9b78ee43e1e
-  - enabled: 1
-    path: Assets/Scenes/TutorialScene.unity
-    guid: 85a547b28ed764b4eb2dcee383890c02
-  - enabled: 1
-    path: Assets/Scenes/PlayScene.unity
-    guid: c8b262512550c43448a3b6ae007467d6
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/NameScene.unity
     guid: 6d9f46f6e5312cd448343062fdcfe1c1
   - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 85a547b28ed764b4eb2dcee383890c02
+  - enabled: 1
+    path: Assets/Scenes/StartScene.unity
+    guid: a909dfbaf5906ce44a9df9b78ee43e1e
+  - enabled: 1
+    path: Assets/Scenes/StageScene.unity
+    guid: 096b410ab057ba04a8e2387236c5da4b
+  - enabled: 1
+    path: Assets/Scenes/PlayScene.unity
+    guid: c8b262512550c43448a3b6ae007467d6
+  - enabled: 0
     path: Assets/Scenes/RankingScene.unity
     guid: 327b31846ea3da545be0f050c7492ab7
+  - enabled: 1
+    path: Assets/Scenes/EndScene_Suc.unity
+    guid: f5d66a00e7be0b540bfba3282e720586
+  - enabled: 1
+    path: Assets/Scenes/EndScene_Fail.unity
+    guid: 0e7efa5c176071a48b4137d1dad1d282
   m_configObjects: {}

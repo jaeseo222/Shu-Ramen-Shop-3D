@@ -17,4 +17,22 @@ public class ChangeScene : MonoBehaviour
     {
         SceneManager.LoadScene("StartScene");
     }
+
+    public void LoadNameScene()
+    {
+        SceneManager.LoadScene("NameScene");
+    }
+
+    public void LoadEndScene_Suc()
+    {
+        SceneManager.LoadScene("EndScene_Suc");
+    }
+    public void LoadEndScene_Fail()
+    {
+        SceneManager.LoadScene("EndScene_Fail");
+    }
+    public void LoadStageScene()
+    {
+        SceneManager.LoadScene("StageScene");
+    }
 }
