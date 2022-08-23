@@ -43,8 +43,12 @@ public class DragMove : MonoBehaviour
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        //if (transform.position.y < -2.7f) objPosition.y = -2.7f;//바닥으로 안 꺼지게 제어
-        transform.position = objPosition;
+
+        // (버그) 바닥으로 안 꺼지게 하려다보니 자꾸 위치를 강제적으로 돌려놓아서 떨리는 현상 발생
+        // if (transform.position.y < -4.0f) objPosition.y = -2.7f; // 바닥으로 안 꺼지게 제어
+        
+        // 리지드바디를 움직여야 충돌 시 떨림 현상 방지
+        myRigid.MovePosition(objPosition);
 
         //주전자 위치 앞뒤로 조정
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
