@@ -20,6 +20,8 @@ public class DragMove : MonoBehaviour
     private float positionUpRange; //휠을 밀어 돌렸을 때의 범위
     private float positionDownRange; // 휠을 당겨 올렸을 때의 범위
 
+    private Rigidbody myRigid;
+
     private void Start()
     {
         if (SceneManager.GetActiveScene().name == "PlayScene")
@@ -36,6 +38,8 @@ public class DragMove : MonoBehaviour
             positionUpRange = TUTORIAL_POSITION_UP;
             positionDownRange = TUTORIAL_POSITION_DOWN;
         }
+
+        myRigid = gameObject.GetComponent<Rigidbody>();
     }
 
     //주전자 들기
