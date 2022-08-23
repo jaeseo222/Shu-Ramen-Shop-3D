@@ -6280,6 +6280,10 @@ MonoBehaviour:
   soupBgm: {fileID: 8300000, guid: 3d17407790181964b86a5dd4192d1899, type: 3}
   leekBgm: {fileID: 8300000, guid: a1f00927a8efec441ba7ee832663d216, type: 3}
   moneyBgm: {fileID: 8300000, guid: 5b4ada30537fb3a4ea6063966ed733f2, type: 3}
+  successPotBgm: {fileID: 8300000, guid: d20153402960c56468cf3fd5ed0a1903, type: 3}
+  failPotBgm: {fileID: 8300000, guid: 4ef8c9572d587d4409f182bb2a014b5f, type: 3}
+  potBgm: {fileID: 8300000, guid: 24738c790bb1858458c7101c80b4be0b, type: 3}
+  eatRamenBgm: {fileID: 8300000, guid: 0e378fdcceacfb24fa79848cd145d3e5, type: 3}
 --- !u!114 &888857831
 MonoBehaviour:
   m_ObjectHideFlags: 0

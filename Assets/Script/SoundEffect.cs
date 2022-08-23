@@ -20,6 +20,10 @@ public class SoundEffect : MonoBehaviour
     public AudioClip soupBgm;
     public AudioClip leekBgm;
     public AudioClip moneyBgm;
+    public AudioClip successPotBgm;
+    public AudioClip failPotBgm;
+    public AudioClip potBgm;
+    public AudioClip eatRamenBgm;
 
     // Start is called before the first frame update
     void Awake()
@@ -93,5 +97,41 @@ public class SoundEffect : MonoBehaviour
             audioSource.Play();
         }
     }
+
+    public void successPotAudio()
+    {
+        audioSource.clip = successPotBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+    public void failPotAudio()
+    {
+        audioSource.clip = failPotBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void eatRamenAudio()
+    {
+        audioSource.clip = eatRamenBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
+    public void potAudio()
+    {
+        audioSource.clip = potBgm;
+        if (soundToggle) //브금 켜져있다면
+        {
+            audioSource.Play();
+        }
+    }
+
 
 }
