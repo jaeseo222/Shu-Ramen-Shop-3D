@@ -12,4 +12,9 @@ public class ChangeScene : MonoBehaviour
     {
         SceneManager.LoadScene("PlayScene");
     }
+
+    public void LoadStartScene()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
 }
