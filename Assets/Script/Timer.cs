@@ -33,7 +33,6 @@ public class Timer : MonoBehaviour
         }        // 시간 초과되면
         else if (!isEnd)
         {
-            Time.timeScale = 0;
             isEnd = true;
 
             if(TotalMoney.totalMoney >= 10000)
