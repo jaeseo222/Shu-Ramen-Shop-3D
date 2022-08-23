@@ -6,6 +6,7 @@ using System;
 
 public class RankedUserLoad : MonoBehaviour
 {
+    public static RankedUserLoad rankedUserLoad;
     
     // 랭킹에 몇 등까지 보여줄지
     private const int LAST = 30;
@@ -40,6 +41,11 @@ public class RankedUserLoad : MonoBehaviour
         public int restaurant;
         public int founded;
         public int part_time;
+    }
+
+    private void Awake()
+    {
+        rankedUserLoad = this;
     }
 
     // Start is called before the first frame update
@@ -173,6 +179,7 @@ public class RankedUserLoad : MonoBehaviour
     }
 
     // 유저 점수 업데이트 post api
+    // part_time (x) 서버에서 받을 땐 partTime으로 받음!!
     IEnumerator UserScorePostApi()
     {
         UnityWebRequest request;
@@ -180,9 +187,9 @@ public class RankedUserLoad : MonoBehaviour
         ScoreInfo user = new ScoreInfo
         {
             name = userName,
-            restaurant = TotalMoney.restaurantMoney,
-            founded = TotalMoney.foundedMoney,
-            part_time = TotalMoney.partTimeMoney
+            restaurant = TotalMoney.stageMoney[2],
+            founded = TotalMoney.stageMoney[1],
+            part_time = TotalMoney.stageMoney[0]
         };
         string json = JsonUtility.ToJson(user);
 
