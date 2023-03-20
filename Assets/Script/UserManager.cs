@@ -11,8 +11,7 @@ public class UserManager : MonoBehaviour
         // 이름 이미 있다면 -> 스타트씬 바로
         if (PlayerPrefs.HasKey("name"))
         {
-            //SceneManager.LoadScene("StartScene");
-            SceneManager.LoadScene("RankingScene");
+            SceneManager.LoadScene("StartScene");
         }
         else
         {

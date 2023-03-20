@@ -15,14 +15,14 @@ public class FirstPerson : MonoBehaviour
     void Start()
     {
         MoveSpeed = 20.0f;
-        rotSpeed = 0.8f;
+        rotSpeed = 0.5f;
         currentRot = 0f;
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerMove();
+        //PlayerMove();
         RotCtrl();
     }
 

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class TotalMoney : MonoBehaviour
 {
@@ -13,7 +15,10 @@ public class TotalMoney : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        totalMoney = 0;
+        if (SceneManager.GetActiveScene().name == "PlayScene")
+        {
+            totalMoney = 0;
+        }
     }
 
     // Update is called once per frame

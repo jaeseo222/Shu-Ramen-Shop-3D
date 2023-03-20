@@ -161,6 +161,16 @@ public class PotMoveTo : MonoBehaviour
         customerChatObj.SetActive(true);
         customerObject.GetComponent<Text>().text = customerTalking;
 
+        // 효과음
+        if(money == 0)
+        {
+            SoundEffect._soundEffect.failPotAudio();
+        }
+        else
+        {
+            SoundEffect._soundEffect.successPotAudio();
+        }
+
         Invoke("deleteChat", 0.7f);
 
         //애니메이션 추가
